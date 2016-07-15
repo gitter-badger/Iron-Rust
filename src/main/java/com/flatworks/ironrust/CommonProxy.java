@@ -17,6 +17,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -80,6 +82,12 @@ public class CommonProxy {
         achievement.registerStat();
     }
     
+    private static int nextSoundId = 8192;
+    
+    private static void registerSound(ResourceLocation soundId) {
+        SoundEvent.REGISTRY.register(nextSoundId++, soundId, new SoundEvent(soundId));
+    }
+    
     private static void addRecipe(Item output, Object... params) {
         GameRegistry.addRecipe(new ItemStack(output), params);
     }
@@ -115,6 +123,7 @@ public class CommonProxy {
         registerEntity(EntityThrownRustPowder.class, "ThrownRustPowder", 64, 10, true);
         registerSpawn(EntityRustyCow.class, 8, 40, 40, EnumCreatureType.MONSTER);
         registerAchievement(ACHIEVEMENT_KILL_RUSTY_COW);
+        registerSound(SOUND_ENTITY_RUSTPOWDER_THROW);
     }
     
     public void init(@SuppressWarnings("unused") FMLInitializationEvent event) {

@@ -100,7 +100,7 @@ public class EntityRustyCow extends EntityMob implements IRangedAttackMob {
         double dz = target.posZ - this.posZ;
         float f = MathHelper.sqrt_double(dx * dx + dz * dz) * 0.2f;
         entity.setThrowableHeading(dx, dy + f, dz, 1.6f, 12f);
-        this.playSound(IronRustMod.SOUND_ENTITY_RUSTPOWDER_THROW, 1f,
+        this.playSound(SoundEvent.REGISTRY.getObject(IronRustMod.SOUND_ENTITY_RUSTPOWDER_THROW), 1f,
                 1f / (this.getRNG().nextFloat() * 0.4f + 0.8f));
         this.worldObj.spawnEntityInWorld(entity);
     }

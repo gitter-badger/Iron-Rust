@@ -1,0 +1,19 @@
+tile.ironrust.blockIronRust.name=Iron Rust Block
+
+item.ironrust.powderRust.name=Iron Rust Powder
+item.ironrust.swordRust.name=Iron Rust Sword
+item.ironrust.shovelRust.name=Iron Rust Shovel
+item.ironrust.pickaxeRust.name=Iron Rust Pickaxe
+item.ironrust.hatchetRust.name=Iron Rust Axe
+item.ironrust.hoeRust.name=Iron Rust Hoe
+item.ironrust.helmetRust.name=Iron Rust Helmet
+item.ironrust.chestplateRust.name=Iron Rust Chestplate
+item.ironrust.leggingsRust.name=Iron Rust Leggings
+item.ironrust.bootsRust.name=Iron Rust Boots
+
+entity.ironrust.RustyCow.name=Rusty Cow
+
+achievement.ironrust.killRustyCow=Give it back!
+achievement.ironrust.killRustyCow.desc=Kill a Rusty Cow with Rust Powder.
+
+subtitles.entity.rustpowder.throw=Rust Powder thrown

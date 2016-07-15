@@ -1,0 +1,8 @@
+{
+  "entity.rustpowder.throw": {
+    "sounds": [
+      "random/bow"
+    ],
+    "subtitle": "subtitles.entity.rustpowder.throw"
+  }
+}

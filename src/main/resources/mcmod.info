@@ -1,0 +1,16 @@
+[
+{
+  "modid": "ironrust",
+  "name": "Iron Rust",
+  "description": "Iron + Oxygen!",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["sjx233"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

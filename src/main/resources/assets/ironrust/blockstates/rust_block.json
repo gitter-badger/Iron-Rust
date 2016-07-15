@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "normal": { "model": "ironrust:rust_block" }
+    }
+}

@@ -49,8 +49,7 @@ public class EntityRustyCow extends EntityMob implements IRangedAttackMob {
     @Override
     protected void initEntityAI() {
         this.tasks.addTask(1, new EntityAISwimming(this));
-        // this.tasks.addTask(2, new EntityAIAttackRanged(this, 1.25d, 100, 16f));
-        this.tasks.addTask(2, new EntityAIAttackRanged(this, 1.25d, 1, 16f));
+        this.tasks.addTask(2, new EntityAIAttackRanged(this, 1.25d, 100, 16f));
         this.tasks.addTask(3, new EntityAIWander(this, 1d));
         this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 6f));
         this.tasks.addTask(4, new EntityAILookIdle(this));

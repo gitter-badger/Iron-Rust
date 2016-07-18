@@ -1,6 +1,5 @@
 package com.flatworks.ironrust;
 
-// Import for @Mod annotation
 import static com.flatworks.ironrust.IronRustMod.MODID;
 import static com.flatworks.ironrust.IronRustMod.NAME;
 import static com.flatworks.ironrust.IronRustMod.VERSION;
@@ -19,7 +18,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -33,7 +31,7 @@ public class IronRustMod {
     public static final String NAME = "Iron Rust";
     public static final String VERSION = "${version}";
     
-    @Instance(MODID)
+    @Mod.Instance(MODID)
     public static IronRustMod instance;
     @SidedProxy(clientSide = "com.flatworks.ironrust.ClientProxy",
             serverSide = "com.flatworks.ironrust.CommonProxy", modId = MODID)

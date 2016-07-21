@@ -30,7 +30,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class IronRustMod {
     public static final String MODID = "ironrust";
     public static final String NAME = "Iron Rust";
-    public static final String VERSION = "${version}";
+    public static final String VERSION = "<build_version>";
     
     @Mod.Instance(MODID)
     public static IronRustMod instance;

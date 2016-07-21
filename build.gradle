@@ -24,6 +24,8 @@ minecraft {
     runDir = "run"
     mappings = "snapshot_20160518"
     makeObfSourceJar = true
+    
+    replace "<build_version>", project.version
 }
 
 dependencies {
@@ -61,15 +63,6 @@ processResources {
 
     from (sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
-    }
-
-    from (sourceSets.main.java.srcDirs) {
-        include 'com/flatworks/ironrust/IronRustMod.java'
-        expand 'version':project.version
-    }
-
-    from (sourceSets.main.java.srcDirs) {
-        exclude 'com/flatworks/ironrust/IronRustMod.java'
     }
 }
 

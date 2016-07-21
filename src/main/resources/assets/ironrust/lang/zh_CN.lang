@@ -17,3 +17,8 @@ achievement.ironrust.killRustyCow=还你！
 achievement.ironrust.killRustyCow.desc=用铁锈粉杀死一头铁锈牛。
 
 subtitles.entity.rustpowder.throw=铁锈粉：飞出
+
+effect.rust=生锈
+potion.effect.rust=生锈药水
+splash_potion.effect.rust=喷溅型生锈药水
+lingering_potion.effect.rust=滞留型生锈药水

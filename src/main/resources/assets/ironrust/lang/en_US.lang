@@ -17,3 +17,8 @@ achievement.ironrust.killRustyCow=Give it back!
 achievement.ironrust.killRustyCow.desc=Kill a Rusty Cow with Rust Powder.
 
 subtitles.entity.rustpowder.throw=Rust Powder thrown
+
+effect.rust=Rust
+potion.effect.rust=Potion of Rust
+splash_potion.effect.rust=Splash Potion of Rust
+lingering_potion.effect.rust=Lingering Potion of Rust

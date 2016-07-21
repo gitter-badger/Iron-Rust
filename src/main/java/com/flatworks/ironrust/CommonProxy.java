@@ -16,6 +16,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionType;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
@@ -85,6 +88,16 @@ public class CommonProxy {
         GameRegistry.register(sound.setRegistryName(name));
     }
     
+    private static void registerPotion(Potion potion, String name, int duration) {
+        GameRegistry.register(potion.setRegistryName(name));
+        GameRegistry.register(
+                new PotionType(name, new PotionEffect(potion, duration)).setRegistryName(name));
+        GameRegistry.register(new PotionType(name, new PotionEffect(potion, duration * 2))
+                .setRegistryName("long_" + name));
+        GameRegistry.register(new PotionType(name, new PotionEffect(potion, duration / 2, 1))
+                .setRegistryName("strong_" + name));
+    }
+    
     private static void addRecipe(Item output, Object... params) {
         GameRegistry.addRecipe(new ItemStack(output), params);
     }
@@ -121,6 +134,7 @@ public class CommonProxy {
         registerSpawn(EntityRustyCow.class, 8, 40, 40, EnumCreatureType.MONSTER);
         registerAchievement(ACHIEVEMENT_KILL_RUSTY_COW);
         registerSound(SOUND_ENTITY_RUSTPOWDER_THROW, "entity.rustpowder.throw");
+        registerPotion(POTION_RUST, "rust", 900);
     }
     
     public void init(@SuppressWarnings("unused") FMLInitializationEvent event) {

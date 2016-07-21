@@ -6,12 +6,14 @@ import static com.flatworks.ironrust.IronRustMod.VERSION;
 
 import com.flatworks.ironrust.block.BlockRustBlock;
 import com.flatworks.ironrust.item.*;
+import com.flatworks.ironrust.potion.PotionRust;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
+import net.minecraft.potion.Potion;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.util.ResourceLocation;
@@ -61,6 +63,7 @@ public class IronRustMod {
                     RUST_POWDER, AchievementList.KILL_ENEMY).setSpecial();
     public static final SoundEvent SOUND_ENTITY_RUSTPOWDER_THROW =
             new SoundEvent(new ResourceLocation(MODID, "entity.rustpowder.throw"));
+    public static final Potion POTION_RUST = new PotionRust();
     
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {

@@ -16,7 +16,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 /**
@@ -45,8 +44,8 @@ public class ItemRustPowder extends Item {
         }
         
         worldIn.playSound((EntityPlayer) null, playerIn.posX, playerIn.posY, playerIn.posZ,
-                SoundEvent.REGISTRY.getObject(IronRustMod.SOUND_ENTITY_RUSTPOWDER_THROW),
-                SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+                IronRustMod.SOUND_ENTITY_RUSTPOWDER_THROW, SoundCategory.NEUTRAL, 0.5F,
+                0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
         
         if (!worldIn.isRemote) {
             EntityThrownRustPowder entity = new EntityThrownRustPowder(worldIn, playerIn);

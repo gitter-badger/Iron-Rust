@@ -15,6 +15,7 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -58,8 +59,8 @@ public class IronRustMod {
     public static final Achievement ACHIEVEMENT_KILL_RUSTY_COW =
             new Achievement("achievement.ironrust.killRustyCow", "ironrust.killRustyCow", 10, -2,
                     RUST_POWDER, AchievementList.KILL_ENEMY).setSpecial();
-    public static final ResourceLocation SOUND_ENTITY_RUSTPOWDER_THROW =
-            new ResourceLocation(MODID, "entity.rustpowder.throw");
+    public static final SoundEvent SOUND_ENTITY_RUSTPOWDER_THROW =
+            new SoundEvent(new ResourceLocation(MODID, "entity.rustpowder.throw"));
     
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {

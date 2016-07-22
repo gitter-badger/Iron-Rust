@@ -1,18 +1,23 @@
 package com.flatworks.ironrust;
 
 import static com.flatworks.ironrust.IronRustMod.*;
+import static net.minecraft.init.Blocks.IRON_BLOCK;
+import static net.minecraft.init.Items.GLOWSTONE_DUST;
+import static net.minecraft.init.Items.IRON_INGOT;
+import static net.minecraft.init.Items.REDSTONE;
+import static net.minecraft.init.Items.STICK;
 
 import java.util.Iterator;
 
 import com.flatworks.ironrust.entity.EntityRustyCow;
 import com.flatworks.ironrust.entity.EntityThrownRustPowder;
+import com.flatworks.ironrust.potion.PotionBrewingRecipe;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -22,6 +27,7 @@ import net.minecraft.potion.PotionType;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -88,14 +94,22 @@ public class CommonProxy {
         GameRegistry.register(sound.setRegistryName(name));
     }
     
-    private static void registerPotion(Potion potion, String name, int duration) {
+    private static void registerPotion(Potion potion, String name, int duration, Item ingredient) {
         GameRegistry.register(potion.setRegistryName(name));
-        GameRegistry.register(
-                new PotionType(name, new PotionEffect(potion, duration)).setRegistryName(name));
-        GameRegistry.register(new PotionType(name, new PotionEffect(potion, duration * 2))
-                .setRegistryName("long_" + name));
-        GameRegistry.register(new PotionType(name, new PotionEffect(potion, duration / 2, 1))
-                .setRegistryName("strong_" + name));
+        PotionType normalType =
+                new PotionType(name, new PotionEffect(potion, duration)).setRegistryName(name);
+        GameRegistry.register(normalType);
+        PotionType longType = new PotionType(name, new PotionEffect(potion, duration * 2))
+                .setRegistryName("long_" + name);
+        GameRegistry.register(longType);
+        PotionType strongType = new PotionType(name, new PotionEffect(potion, duration / 2, 1))
+                .setRegistryName("strong_" + name);
+        GameRegistry.register(strongType);
+        BrewingRecipeRegistry.addRecipe(new PotionBrewingRecipe(normalType, REDSTONE, longType));
+        BrewingRecipeRegistry
+                .addRecipe(new PotionBrewingRecipe(normalType, GLOWSTONE_DUST, strongType));
+        BrewingRecipeRegistry
+                .addRecipe(new PotionBrewingRecipe(PotionTypes.AWKWARD, ingredient, normalType));
     }
     
     private static void addRecipe(Item output, Object... params) {
@@ -134,21 +148,21 @@ public class CommonProxy {
         registerSpawn(EntityRustyCow.class, 8, 40, 40, EnumCreatureType.MONSTER);
         registerAchievement(ACHIEVEMENT_KILL_RUSTY_COW);
         registerSound(SOUND_ENTITY_RUSTPOWDER_THROW, "entity.rustpowder.throw");
-        registerPotion(POTION_RUST, "rust", 900);
+        registerPotion(POTION_RUST, "rust", 900, RUST_POWDER);
     }
     
     public void init(@SuppressWarnings("unused") FMLInitializationEvent event) {
         addRecipe(RUST_BLOCK, "###", "###", "###", '#', RUST_POWDER);
-        addRecipe(RUST_SWORD, "#", "#", "|", '#', RUST_POWDER, '|', Items.STICK);
-        addRecipe(RUST_SHOVEL, "#", "|", "|", '#', RUST_POWDER, '|', Items.STICK);
-        addRecipe(RUST_PICKAXE, "###", " | ", " | ", '#', RUST_POWDER, '|', Items.STICK);
-        addRecipe(RUST_AXE, "##", "#|", " |", '#', RUST_POWDER, '|', Items.STICK);
-        addRecipe(RUST_HOE, "##", " |", " |", '#', RUST_POWDER, '|', Items.STICK);
+        addRecipe(RUST_SWORD, "#", "#", "|", '#', RUST_POWDER, '|', STICK);
+        addRecipe(RUST_SHOVEL, "#", "|", "|", '#', RUST_POWDER, '|', STICK);
+        addRecipe(RUST_PICKAXE, "###", " | ", " | ", '#', RUST_POWDER, '|', STICK);
+        addRecipe(RUST_AXE, "##", "#|", " |", '#', RUST_POWDER, '|', STICK);
+        addRecipe(RUST_HOE, "##", " |", " |", '#', RUST_POWDER, '|', STICK);
         addRecipe(RUST_HELMET, "###", "# #", '#', RUST_POWDER);
         addRecipe(RUST_CHESTPLATE, "# #", "###", "###", '#', RUST_POWDER);
         addRecipe(RUST_LEGGINGS, "###", "# #", "# #", '#', RUST_POWDER);
         addRecipe(RUST_BOOTS, "# #", "# #", '#', RUST_POWDER);
-        addSmelting(RUST_POWDER, Items.IRON_INGOT, 0.15f);
-        addSmelting(RUST_BLOCK, Blocks.IRON_BLOCK, 1.5f);
+        addSmelting(RUST_POWDER, IRON_INGOT, 0.15f);
+        addSmelting(RUST_BLOCK, IRON_BLOCK, 1.5f);
     }
 }

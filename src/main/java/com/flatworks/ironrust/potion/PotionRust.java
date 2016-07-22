@@ -28,6 +28,12 @@ public class PotionRust extends Potion {
         this.setEffectiveness(0.25d);
         this.registerPotionAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED,
                 "b4848d5d-4d9f-432f-a850-87efc2ad56dd", -0.15d, 2);
+        this.registerPotionAttributeModifier(SharedMonsterAttributes.ATTACK_SPEED,
+                "abd2b596-5974-4f99-bd63-71c4a12b3409", -0.1d, 2);
+        this.registerPotionAttributeModifier(SharedMonsterAttributes.ATTACK_DAMAGE,
+                "14d02f03-3d0c-4b7d-ae0d-08e8a1af0d20", +0.05d, 2);
+        this.registerPotionAttributeModifier(SharedMonsterAttributes.ARMOR,
+                "218119cf-ee1c-4cf9-953a-33bea6f5cbcf", +0.1d, 2);
     }
     
     @Override

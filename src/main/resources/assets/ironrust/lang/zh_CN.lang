@@ -10,7 +10,7 @@ item.ironrust.helmetRust.name=铁锈头盔
 item.ironrust.chestplateRust.name=铁锈胸甲
 item.ironrust.leggingsRust.name=铁锈护腿
 item.ironrust.bootsRust.name=铁锈靴子
-item.ironrust.appleRust.name=铁锈苹果
+item.ironrust.appleRust.name=生锈的苹果
 
 entity.ironrust.RustyCow.name=铁锈牛
 
@@ -23,3 +23,4 @@ effect.rust=生锈
 potion.effect.rust=生锈药水
 splash_potion.effect.rust=喷溅型生锈药水
 lingering_potion.effect.rust=滞留型生锈药水
+tipped_arrow.effect.rust=生锈之箭

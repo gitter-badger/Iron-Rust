@@ -28,7 +28,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 /**
  * @author sjx233
  */
-@Mod(modid = MODID, name = NAME, version = VERSION, acceptedMinecraftVersions = "1.9.4")
+@Mod(modid = MODID, name = NAME, version = VERSION, acceptedMinecraftVersions = "1.10.2")
 public class IronRustMod {
     public static final String MODID = "ironrust";
     public static final String NAME = "Iron Rust";

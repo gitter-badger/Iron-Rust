@@ -10,6 +10,7 @@ item.ironrust.helmetRust.name=Iron Rust Helmet
 item.ironrust.chestplateRust.name=Iron Rust Chestplate
 item.ironrust.leggingsRust.name=Iron Rust Leggings
 item.ironrust.bootsRust.name=Iron Rust Boots
+item.ironrust.appleRust.name=Iron Rust Apple
 
 entity.ironrust.RustyCow.name=Rusty Cow
 

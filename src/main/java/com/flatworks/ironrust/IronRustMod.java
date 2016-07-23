@@ -45,6 +45,7 @@ public class IronRustMod {
     public static final ArmorMaterial ARMOR_MATERIAL_RUST =
             EnumHelper.addArmorMaterial("RUST", "ironrust:rust", 3, new int[] { 1, 3, 4, 2 }, 30,
                     SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0f);
+    public static final Potion POTION_RUST = new PotionRust();
     
     public static final Item RUST_POWDER = new ItemRustPowder();
     public static final Item RUST_SWORD = new ItemRustSword();
@@ -56,6 +57,7 @@ public class IronRustMod {
     public static final Item RUST_CHESTPLATE = new ItemRustChestplate();
     public static final Item RUST_LEGGINGS = new ItemRustLeggings();
     public static final Item RUST_BOOTS = new ItemRustBoots();
+    public static final Item RUST_APPLE = new ItemRustApple();
     public static final Block RUST_BLOCK = new BlockRustBlock();
     
     public static final Achievement ACHIEVEMENT_KILL_RUSTY_COW =
@@ -63,7 +65,6 @@ public class IronRustMod {
                     RUST_POWDER, AchievementList.KILL_ENEMY).setSpecial();
     public static final SoundEvent SOUND_ENTITY_RUSTPOWDER_THROW =
             new SoundEvent(new ResourceLocation(MODID, "entity.rustpowder.throw"));
-    public static final Potion POTION_RUST = new PotionRust();
     
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {

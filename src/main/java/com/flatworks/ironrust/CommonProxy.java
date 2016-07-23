@@ -2,6 +2,7 @@ package com.flatworks.ironrust;
 
 import static com.flatworks.ironrust.IronRustMod.*;
 import static net.minecraft.init.Blocks.IRON_BLOCK;
+import static net.minecraft.init.Items.APPLE;
 import static net.minecraft.init.Items.GLOWSTONE_DUST;
 import static net.minecraft.init.Items.IRON_INGOT;
 import static net.minecraft.init.Items.REDSTONE;
@@ -142,6 +143,7 @@ public class CommonProxy {
         registerItem(RUST_CHESTPLATE, "rust_chestplate");
         registerItem(RUST_LEGGINGS, "rust_leggings");
         registerItem(RUST_BOOTS, "rust_boots");
+        registerItem(RUST_APPLE, "rust_apple");
         registerItem(RUST_BLOCK, "rust_block");
         registerEntity(EntityRustyCow.class, "RustyCow", 64, 3, true, 0x240d00, 0x6d5a31);
         registerEntity(EntityThrownRustPowder.class, "ThrownRustPowder", 64, 10, true);
@@ -162,6 +164,7 @@ public class CommonProxy {
         addRecipe(RUST_CHESTPLATE, "# #", "###", "###", '#', RUST_POWDER);
         addRecipe(RUST_LEGGINGS, "###", "# #", "# #", '#', RUST_POWDER);
         addRecipe(RUST_BOOTS, "# #", "# #", '#', RUST_POWDER);
+        addRecipe(RUST_APPLE, "###", "#X#", "###", '#', RUST_POWDER, 'X', APPLE);
         addSmelting(RUST_POWDER, IRON_INGOT, 0.15f);
         addSmelting(RUST_BLOCK, IRON_BLOCK, 1.5f);
     }

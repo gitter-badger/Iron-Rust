@@ -10,6 +10,7 @@ item.ironrust.helmetRust.name=铁锈头盔
 item.ironrust.chestplateRust.name=铁锈胸甲
 item.ironrust.leggingsRust.name=铁锈护腿
 item.ironrust.bootsRust.name=铁锈靴子
+item.ironrust.appleRust.name=铁锈苹果
 
 entity.ironrust.RustyCow.name=铁锈牛
 

@@ -56,5 +56,6 @@ public class ClientProxy extends CommonProxy {
         registerModel(RUST_LEGGINGS, 0, "rust_leggings");
         registerModel(RUST_BOOTS, 0, "rust_boots");
         registerModel(RUST_BLOCK, 0, "rust_block");
+        registerModel(RUST_APPLE, 0, "rust_apple");
     }
 }

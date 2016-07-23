@@ -20,7 +20,7 @@ group = "com.flatworks.ironrust"
 archivesBaseName = "ironrust"
 
 minecraft {
-    version = "1.9.4-12.17.0.1976"
+    version = "1.10.2-12.18.1.2011"
     runDir = "run"
     mappings = "snapshot_20160518"
     makeObfSourceJar = true

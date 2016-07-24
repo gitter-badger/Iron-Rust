@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions
  * @author sjx233
  */
 @TransformerExclusions("com.flatworks.ironrust")
-@MCVersion("1.9.4")
+@MCVersion("1.10.2")
 public class IronRustCoreMod implements IFMLLoadingPlugin {
     @Override
     public String[] getASMTransformerClass() {

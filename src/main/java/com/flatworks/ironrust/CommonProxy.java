@@ -28,7 +28,9 @@ import net.minecraft.potion.PotionType;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -38,6 +40,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
  * @author sjx233
  */
 public class CommonProxy {
+    private static int configInt(String name, int dflt, int min, int max, String desc) {
+        return config.getInt(name, Configuration.CATEGORY_GENERAL, dflt, min, max, desc,
+                "config.ironrust." + name);
+    }
+    
     private static void registerItem(Item item, String name) {
         GameRegistry.register(item.setRegistryName(name));
     }
@@ -129,7 +136,22 @@ public class CommonProxy {
         GameRegistry.addSmelting(input, new ItemStack(output), xp);
     }
     
-    public void preInit(@SuppressWarnings("unused") FMLPreInitializationEvent event) {
+    public void preInit(FMLPreInitializationEvent event) {
+        MinecraftForge.EVENT_BUS.register(instance);
+        
+        config = new Configuration(event.getSuggestedConfigurationFile());
+        randomTicksNeeded = configInt("randomTicksNeeded", 200, 1, Integer.MAX_VALUE,
+                "How many random ticks are needed for iron to rust?");
+        waterEffect =
+                configInt("waterEffect", 25, 0, Integer.MAX_VALUE, "Water effect multiplier.");
+        airEffect = configInt("airEffect", 5, 0, Integer.MAX_VALUE,
+                "Air effect multiplier without enough water.");
+        airEffectWithWater = configInt("airEffectWithWater", 35, 0, Integer.MAX_VALUE,
+                "Air effect multiplier with enough water.");
+        minWaterToMakeAirEffective =
+                configInt("minWaterToMakeAirEffective", 2, 0, 5, "How much water is enough?");
+        config.save();
+        
         TOOL_MATERIAL_RUST.setRepairItem(new ItemStack(RUST_POWDER, 1,
                 net.minecraftforge.oredict.OreDictionary.WILDCARD_VALUE));
         ARMOR_MATERIAL_RUST.customCraftingMaterial = RUST_POWDER;

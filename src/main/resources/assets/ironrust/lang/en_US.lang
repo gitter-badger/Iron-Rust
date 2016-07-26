@@ -24,3 +24,14 @@ potion.effect.rust=Potion of Rust
 splash_potion.effect.rust=Splash Potion of Rust
 lingering_potion.effect.rust=Lingering Potion of Rust
 tipped_arrow.effect.rust=Arrow of Rust
+
+config.ironrust.randomTicksNeeded=Random Ticks Needed
+config.ironrust.randomTicksNeeded.tooltip=How many random ticks are needed for iron to rust?
+config.ironrust.waterEffect=Water Effect
+config.ironrust.waterEffect.tooltip=Water effect multiplier.
+config.ironrust.airEffect=Air Effect
+config.ironrust.airEffect.tooltip=Air effect multiplier without enough water.
+config.ironrust.airEffectWithWater=Air Effect With Water
+config.ironrust.airEffectWithWater.tooltip=Air effect multiplier with enough water.
+config.ironrust.minWaterToMakeAirEffective=Min Water To Make Air Effective
+config.ironrust.minWaterToMakeAirEffective.tooltip=How much water is enough?

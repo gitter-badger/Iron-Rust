@@ -18,17 +18,22 @@ import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * @author sjx233
  */
-@Mod(modid = MODID, name = NAME, version = VERSION, acceptedMinecraftVersions = "1.10.2")
+@Mod(modid = MODID, name = NAME, version = VERSION,
+        guiFactory = "com.flatworks.ironrust.client.gui.IronRustModGuiFactory",
+        acceptedMinecraftVersions = "1.10.2")
 public class IronRustMod {
     public static final String MODID = "ironrust";
     public static final String NAME = "Iron Rust";
@@ -36,9 +41,16 @@ public class IronRustMod {
     
     @Mod.Instance(MODID)
     public static IronRustMod instance;
-    @SidedProxy(clientSide = "com.flatworks.ironrust.ClientProxy",
+    @SidedProxy(clientSide = "com.flatworks.ironrust.client.ClientProxy",
             serverSide = "com.flatworks.ironrust.CommonProxy", modId = MODID)
     public static CommonProxy proxy;
+    public static Configuration config;
+    
+    public static int randomTicksNeeded = 200;
+    public static int waterEffect = 25;
+    public static int airEffect = 5;
+    public static int airEffectWithWater = 35;
+    public static int minWaterToMakeAirEffective = 2;
     
     public static final ToolMaterial TOOL_MATERIAL_RUST =
             EnumHelper.addToolMaterial("RUST", 1, 46, 4f, 1f, 56);
@@ -74,5 +86,12 @@ public class IronRustMod {
     @EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.init(event);
+    }
+    
+    @SubscribeEvent
+    public void onConfigChanged(ConfigChangedEvent event) {
+        if (event.getModID() == MODID) {
+            config.save();
+        }
     }
 }

@@ -49,6 +49,8 @@ public class BlockIronBlock extends Block {
     }
     
     protected int getRustChance(int water, int air) {
-        return 200 - (water * 25 + air * (water >= 2 ? 35 : 5)); // 1 / 200 to 1 / 10
+        return IronRustMod.randomTicksNeeded - (water * IronRustMod.waterEffect
+                + air * (water >= IronRustMod.minWaterToMakeAirEffective
+                        ? IronRustMod.airEffectWithWater : IronRustMod.airEffect));
     }
 }

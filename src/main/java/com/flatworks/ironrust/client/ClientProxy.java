@@ -1,11 +1,12 @@
-package com.flatworks.ironrust;
+package com.flatworks.ironrust.client;
 
 import static com.flatworks.ironrust.IronRustMod.*;
 
+import com.flatworks.ironrust.CommonProxy;
+import com.flatworks.ironrust.client.entity.RenderFactoryRustyCow;
+import com.flatworks.ironrust.client.entity.RenderFactoryThrownRustPowder;
 import com.flatworks.ironrust.entity.EntityRustyCow;
 import com.flatworks.ironrust.entity.EntityThrownRustPowder;
-import com.flatworks.ironrust.entity.RenderFactoryRustyCow;
-import com.flatworks.ironrust.entity.RenderFactoryThrownRustPowder;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;

@@ -1,6 +1,7 @@
-package com.flatworks.ironrust.entity;
+package com.flatworks.ironrust.client.entity;
 
 import com.flatworks.ironrust.IronRustMod;
+import com.flatworks.ironrust.entity.EntityThrownRustPowder;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;

@@ -1,6 +1,7 @@
-package com.flatworks.ironrust.entity;
+package com.flatworks.ironrust.client.entity;
 
 import com.flatworks.ironrust.IronRustMod;
+import com.flatworks.ironrust.entity.EntityRustyCow;
 
 import net.minecraft.client.model.ModelCow;
 import net.minecraft.client.renderer.entity.Render;

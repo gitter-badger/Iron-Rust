@@ -15,7 +15,7 @@ delete 'build'
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "2.0.0"
+version = "2.1.0"
 group = "com.flatworks.ironrust"
 archivesBaseName = "ironrust"
 

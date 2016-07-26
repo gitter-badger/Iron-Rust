@@ -24,3 +24,14 @@ potion.effect.rust=生锈药水
 splash_potion.effect.rust=喷溅型生锈药水
 lingering_potion.effect.rust=滞留型生锈药水
 tipped_arrow.effect.rust=生锈之箭
+
+config.ironrust.randomTicksNeeded=需要的随机刻
+config.ironrust.randomTicksNeeded.tooltip=多少次随机刻能让铁生锈？
+config.ironrust.waterEffect=水的效果
+config.ironrust.waterEffect.tooltip=水在生锈时的效果。
+config.ironrust.airEffect=空气的效果
+config.ironrust.airEffect.tooltip=当没有足够的水时空气在生锈时的效果。
+config.ironrust.airEffectWithWater=空气与水共同作用的效果
+config.ironrust.airEffectWithWater.tooltip=当水足够时空气在生锈时的效果。
+config.ironrust.minWaterToMakeAirEffective=能与空气共同作用的水量
+config.ironrust.minWaterToMakeAirEffective.tooltip=多少水是足够的？

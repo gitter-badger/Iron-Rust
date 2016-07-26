@@ -140,17 +140,7 @@ public class CommonProxy {
         MinecraftForge.EVENT_BUS.register(instance);
         
         config = new Configuration(event.getSuggestedConfigurationFile());
-        randomTicksNeeded = configInt("randomTicksNeeded", 200, 1, Integer.MAX_VALUE,
-                "How many random ticks are needed for iron to rust?");
-        waterEffect =
-                configInt("waterEffect", 25, 0, Integer.MAX_VALUE, "Water effect multiplier.");
-        airEffect = configInt("airEffect", 5, 0, Integer.MAX_VALUE,
-                "Air effect multiplier without enough water.");
-        airEffectWithWater = configInt("airEffectWithWater", 35, 0, Integer.MAX_VALUE,
-                "Air effect multiplier with enough water.");
-        minWaterToMakeAirEffective =
-                configInt("minWaterToMakeAirEffective", 2, 0, 5, "How much water is enough?");
-        config.save();
+        this.updateConfig();
         
         TOOL_MATERIAL_RUST.setRepairItem(new ItemStack(RUST_POWDER, 1,
                 net.minecraftforge.oredict.OreDictionary.WILDCARD_VALUE));
@@ -189,5 +179,19 @@ public class CommonProxy {
         addRecipe(RUST_APPLE, "###", "#X#", "###", '#', RUST_POWDER, 'X', APPLE);
         addSmelting(RUST_POWDER, IRON_INGOT, 0.15f);
         addSmelting(RUST_BLOCK, IRON_BLOCK, 1.5f);
+    }
+    
+    public void updateConfig() {
+        randomTicksNeeded = configInt("randomTicksNeeded", 200, 1, Integer.MAX_VALUE,
+                "How many random ticks are needed for iron to rust?");
+        waterEffect =
+                configInt("waterEffect", 25, 0, Integer.MAX_VALUE, "Water effect multiplier.");
+        airEffect = configInt("airEffect", 5, 0, Integer.MAX_VALUE,
+                "Air effect multiplier without enough water.");
+        airEffectWithWater = configInt("airEffectWithWater", 35, 0, Integer.MAX_VALUE,
+                "Air effect multiplier with enough water.");
+        minWaterToMakeAirEffective =
+                configInt("minWaterToMakeAirEffective", 2, 0, 5, "How much water is enough?");
+        config.save();
     }
 }

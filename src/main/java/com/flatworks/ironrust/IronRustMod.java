@@ -91,7 +91,11 @@ public class IronRustMod {
     @SubscribeEvent
     public void onConfigChanged(ConfigChangedEvent event) {
         if (event.getModID() == MODID) {
-            config.save();
+            this.updateConfig();
         }
+    }
+    
+    public void updateConfig() {
+        proxy.updateConfig();
     }
 }

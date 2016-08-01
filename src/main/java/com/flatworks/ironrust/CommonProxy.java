@@ -84,7 +84,7 @@ public class CommonProxy {
     }
     
     public void init(@SuppressWarnings("unused") FMLInitializationEvent event) {
-        addRecipe(RUST_SWORD, "#", "#", "|", '#', RUST_POWDER, '|', STICK); // 7444 64 26
+        addRecipe(RUST_SWORD, "#", "#", "|", '#', RUST_POWDER, '|', STICK);
         addRecipe(RUST_SHOVEL, "#", "|", "|", '#', RUST_POWDER, '|', STICK);
         addRecipe(RUST_PICKAXE, "###", " | ", " | ", '#', RUST_POWDER, '|', STICK);
         addRecipe(RUST_AXE, "##", "#|", " |", '#', RUST_POWDER, '|', STICK);

@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "axis=z": { "model": "ironrust:rust_portal_ew" },
+        "axis=x": { "model": "ironrust:rust_portal_ns" }
+    }
+}

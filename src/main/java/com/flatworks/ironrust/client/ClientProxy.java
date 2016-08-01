@@ -9,10 +9,11 @@ import com.flatworks.ironrust.entity.EntityRustyCow;
 import com.flatworks.ironrust.entity.EntityThrownRustPowder;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -22,30 +23,23 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
  * @author sjx233
  */
 public class ClientProxy extends CommonProxy {
-    private static <T extends Entity> void registerEntityRender(Class<T> entityClass,
-            IRenderFactory<? super T> renderFactory) {
-        RenderingRegistry.<T>registerEntityRenderingHandler(entityClass, renderFactory);
-    }
-    
     private static void registerModel(Item item, int meta, String modelId) {
-        Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, meta,
-                new ModelResourceLocation(MODID + ":" + modelId, "inventory"));
+        ModelLoader.setCustomModelResourceLocation(item, meta,
+                new ModelResourceLocation(new ResourceLocation(MODID, modelId), "inventory"));
     }
     
     private static void registerModel(Block block, int meta, String id) {
         registerModel(Item.getItemFromBlock(block), meta, id);
     }
     
-    @Override
-    public void preInit(FMLPreInitializationEvent event) {
-        super.preInit(event);
-        registerEntityRender(EntityThrownRustPowder.class, new RenderFactoryThrownRustPowder());
-        registerEntityRender(EntityRustyCow.class, new RenderFactoryRustyCow());
+    private static <T extends Entity> void registerEntityRender(Class<T> entityClass,
+            IRenderFactory<? super T> renderFactory) {
+        RenderingRegistry.<T>registerEntityRenderingHandler(entityClass, renderFactory);
     }
     
     @Override
-    public void init(FMLInitializationEvent event) {
-        super.init(event);
+    public void preInit(FMLPreInitializationEvent event) {
+        super.preInit(event);
         registerModel(RUST_POWDER, 0, "rust_powder");
         registerModel(RUST_SWORD, 0, "rust_sword");
         registerModel(RUST_SHOVEL, 0, "rust_shovel");
@@ -56,7 +50,15 @@ public class ClientProxy extends CommonProxy {
         registerModel(RUST_CHESTPLATE, 0, "rust_chestplate");
         registerModel(RUST_LEGGINGS, 0, "rust_leggings");
         registerModel(RUST_BOOTS, 0, "rust_boots");
-        registerModel(RUST_BLOCK, 0, "rust_block");
         registerModel(RUST_APPLE, 0, "rust_apple");
+        registerModel(RUST_BLOCK, 0, "rust_block");
+        registerModel(RUST_GRASS, 0, "rust_grass");
+        registerEntityRender(EntityThrownRustPowder.class, new RenderFactoryThrownRustPowder());
+        registerEntityRender(EntityRustyCow.class, new RenderFactoryRustyCow());
+    }
+    
+    @Override
+    public void init(FMLInitializationEvent event) {
+        super.init(event);
     }
 }

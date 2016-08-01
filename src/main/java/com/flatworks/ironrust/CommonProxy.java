@@ -1,6 +1,7 @@
 package com.flatworks.ironrust;
 
 import static com.flatworks.ironrust.IronRustMod.*;
+import static net.minecraft.init.Blocks.GRASS;
 import static net.minecraft.init.Blocks.IRON_BLOCK;
 import static net.minecraft.init.Items.APPLE;
 import static net.minecraft.init.Items.GLOWSTONE_DUST;
@@ -26,8 +27,15 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
 import net.minecraft.stats.Achievement;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraftforge.common.BiomeManager;
+import net.minecraftforge.common.BiomeManager.BiomeEntry;
+import net.minecraftforge.common.BiomeManager.BiomeType;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.config.Configuration;
@@ -40,6 +48,82 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
  * @author sjx233
  */
 public class CommonProxy {
+    public void preInit(FMLPreInitializationEvent event) {
+        init();
+        
+        MinecraftForge.EVENT_BUS.register(instance);
+        config = new Configuration(event.getSuggestedConfigurationFile());
+        this.updateConfig();
+        TOOL_MATERIAL_RUST.setRepairItem(new ItemStack(RUST_POWDER, 1,
+                net.minecraftforge.oredict.OreDictionary.WILDCARD_VALUE));
+        ARMOR_MATERIAL_RUST.customCraftingMaterial = RUST_POWDER;
+        
+        registerItem(RUST_POWDER, "rust_powder");
+        registerItem(RUST_SWORD, "rust_sword");
+        registerItem(RUST_SHOVEL, "rust_shovel");
+        registerItem(RUST_PICKAXE, "rust_pickaxe");
+        registerItem(RUST_AXE, "rust_axe");
+        registerItem(RUST_HOE, "rust_hoe");
+        registerItem(RUST_HELMET, "rust_helmet");
+        registerItem(RUST_CHESTPLATE, "rust_chestplate");
+        registerItem(RUST_LEGGINGS, "rust_leggings");
+        registerItem(RUST_BOOTS, "rust_boots");
+        registerItem(RUST_APPLE, "rust_apple");
+        registerItem(RUST_BLOCK, "rust_block");
+        registerItem(RUST_GRASS, "rust_grass");
+        registerItem(RUST_PORTAL, "rust_portal", false);
+        registerEntity(EntityRustyCow.class, "RustyCow", 64, 3, true, 0x240d00, 0x6d5a31);
+        registerEntity(EntityThrownRustPowder.class, "ThrownRustPowder", 64, 10, true);
+        registerSpawn(EntityRustyCow.class, 8, 40, 40, EnumCreatureType.MONSTER);
+        registerAchievement(ACHIEVEMENT_KILL_RUSTY_COW);
+        registerSound(SOUND_ENTITY_RUSTPOWDER_THROW, "entity.rustpowder.throw");
+        registerPotion(POTION_RUST, "rust", 900, RUST_POWDER);
+        registerLootTable(LOOT_TABLE_ENTITIES_RUSTY_COW);
+        registerBiome(BIOME_RUST, "rust", BiomeType.COOL, 1);
+        registerDimension(DIMENSION_RUST);
+    }
+    
+    public void init(@SuppressWarnings("unused") FMLInitializationEvent event) {
+        addRecipe(RUST_SWORD, "#", "#", "|", '#', RUST_POWDER, '|', STICK); // 7444 64 26
+        addRecipe(RUST_SHOVEL, "#", "|", "|", '#', RUST_POWDER, '|', STICK);
+        addRecipe(RUST_PICKAXE, "###", " | ", " | ", '#', RUST_POWDER, '|', STICK);
+        addRecipe(RUST_AXE, "##", "#|", " |", '#', RUST_POWDER, '|', STICK);
+        addRecipe(RUST_HOE, "##", " |", " |", '#', RUST_POWDER, '|', STICK);
+        addRecipe(RUST_HELMET, "###", "# #", '#', RUST_POWDER);
+        addRecipe(RUST_CHESTPLATE, "# #", "###", "###", '#', RUST_POWDER);
+        addRecipe(RUST_LEGGINGS, "###", "# #", "# #", '#', RUST_POWDER);
+        addRecipe(RUST_BOOTS, "# #", "# #", '#', RUST_POWDER);
+        addRecipe(RUST_APPLE, "###", "#X#", "###", '#', RUST_POWDER, 'X', APPLE);
+        addRecipe(RUST_BLOCK, "###", "###", "###", '#', RUST_POWDER);
+        addRecipe(RUST_GRASS, "#", "X", '#', RUST_POWDER, 'X', GRASS);
+        addSmelting(RUST_POWDER, IRON_INGOT, 0.15f);
+        addSmelting(RUST_BLOCK, IRON_BLOCK, 1.5f);
+    }
+    
+    public void updateConfig() {
+        randomTicksNeeded = configInt("randomTicksNeeded", 200, 1, Integer.MAX_VALUE,
+                "How many random ticks are needed for iron to rust?");
+        waterEffect =
+                configInt("waterEffect", 25, 0, Integer.MAX_VALUE, "Water effect multiplier.");
+        airEffect = configInt("airEffect", 5, 0, Integer.MAX_VALUE,
+                "Air effect multiplier without enough water.");
+        airEffectWithWater = configInt("airEffectWithWater", 35, 0, Integer.MAX_VALUE,
+                "Air effect multiplier with enough water.");
+        minWaterToMakeAirEffective =
+                configInt("minWaterToMakeAirEffective", 2, 0, 5, "How much water is enough?");
+        config.save();
+    }
+    
+    private static void init() {
+        Biome[] result = new Biome[Biome.REGISTRY.getKeys().size()];
+        Iterator<Biome> it = Biome.REGISTRY.iterator();
+        int i = 0;
+        while (it.hasNext()) {
+            result[i++] = it.next();
+        }
+        allBiomes = result;
+    }
+    
     private static int configInt(String name, int dflt, int min, int max, String desc) {
         return config.getInt(name, Configuration.CATEGORY_GENERAL, dflt, min, max, desc,
                 "config.ironrust." + name);
@@ -50,8 +134,14 @@ public class CommonProxy {
     }
     
     private static void registerItem(Block block, String name) {
+        registerItem(block, name, true);
+    }
+    
+    private static void registerItem(Block block, String name, boolean hasItem) {
         GameRegistry.register(block.setRegistryName(name));
-        GameRegistry.register(new ItemBlock(block).setRegistryName(name));
+        if (hasItem) {
+            GameRegistry.register(new ItemBlock(block).setRegistryName(name));
+        }
     }
     
     private static int nextEntityId = 0;
@@ -69,6 +159,8 @@ public class CommonProxy {
                 trackingRange, updateFrequency, sendsVelocityUpdates, eggPrimary, eggSecondary);
     }
     
+    private static Biome[] allBiomes = null;
+    
     private static void registerSpawn(Class<? extends EntityLiving> entityClass, int weight,
             int min, int max, EnumCreatureType type, Biome[] biomes) {
         EntityRegistry.addSpawn(entityClass, weight, min, max, type, biomes);
@@ -76,22 +168,7 @@ public class CommonProxy {
     
     private static void registerSpawn(Class<? extends EntityLiving> entityClass, int weight,
             int min, int max, EnumCreatureType type) {
-        registerSpawn(entityClass, weight, min, max, type, allBiomes());
-    }
-    
-    private static Biome[] allBiomesCache = null;
-    
-    private static Biome[] allBiomes() {
-        if (allBiomesCache == null) {
-            Biome[] result = new Biome[Biome.REGISTRY.getKeys().size()];
-            Iterator<Biome> it = Biome.REGISTRY.iterator();
-            int i = 0;
-            while (it.hasNext()) {
-                result[i++] = it.next();
-            }
-            allBiomesCache = result;
-        }
-        return allBiomesCache;
+        registerSpawn(entityClass, weight, min, max, type, allBiomes);
     }
     
     private static void registerAchievement(Achievement achievement) {
@@ -120,6 +197,23 @@ public class CommonProxy {
                 .addRecipe(new PotionBrewingRecipe(PotionTypes.AWKWARD, ingredient, normalType));
     }
     
+    private static void registerLootTable(ResourceLocation lootTable) {
+        LootTableList.register(lootTable);
+    }
+    
+    private static void registerBiome(Biome biome, String name) {
+        GameRegistry.register(biome.setRegistryName(name));
+    }
+    
+    private static void registerBiome(Biome biome, String name, BiomeType type, int weight) {
+        registerBiome(biome, name);
+        BiomeManager.addBiome(type, new BiomeEntry(biome, weight));
+    }
+    
+    private static void registerDimension(DimensionType dimension) {
+        DimensionManager.registerDimension(dimension.getId(), dimension);
+    }
+    
     private static void addRecipe(Item output, Object... params) {
         GameRegistry.addRecipe(new ItemStack(output), params);
     }
@@ -134,64 +228,5 @@ public class CommonProxy {
     
     private static void addSmelting(Block input, Block output, float xp) {
         GameRegistry.addSmelting(input, new ItemStack(output), xp);
-    }
-    
-    public void preInit(FMLPreInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(instance);
-        
-        config = new Configuration(event.getSuggestedConfigurationFile());
-        this.updateConfig();
-        
-        TOOL_MATERIAL_RUST.setRepairItem(new ItemStack(RUST_POWDER, 1,
-                net.minecraftforge.oredict.OreDictionary.WILDCARD_VALUE));
-        ARMOR_MATERIAL_RUST.customCraftingMaterial = RUST_POWDER;
-        registerItem(RUST_POWDER, "rust_powder");
-        registerItem(RUST_SWORD, "rust_sword");
-        registerItem(RUST_SHOVEL, "rust_shovel");
-        registerItem(RUST_PICKAXE, "rust_pickaxe");
-        registerItem(RUST_AXE, "rust_axe");
-        registerItem(RUST_HOE, "rust_hoe");
-        registerItem(RUST_HELMET, "rust_helmet");
-        registerItem(RUST_CHESTPLATE, "rust_chestplate");
-        registerItem(RUST_LEGGINGS, "rust_leggings");
-        registerItem(RUST_BOOTS, "rust_boots");
-        registerItem(RUST_APPLE, "rust_apple");
-        registerItem(RUST_BLOCK, "rust_block");
-        registerEntity(EntityRustyCow.class, "RustyCow", 64, 3, true, 0x240d00, 0x6d5a31);
-        registerEntity(EntityThrownRustPowder.class, "ThrownRustPowder", 64, 10, true);
-        registerSpawn(EntityRustyCow.class, 8, 40, 40, EnumCreatureType.MONSTER);
-        registerAchievement(ACHIEVEMENT_KILL_RUSTY_COW);
-        registerSound(SOUND_ENTITY_RUSTPOWDER_THROW, "entity.rustpowder.throw");
-        registerPotion(POTION_RUST, "rust", 900, RUST_POWDER);
-    }
-    
-    public void init(@SuppressWarnings("unused") FMLInitializationEvent event) {
-        addRecipe(RUST_BLOCK, "###", "###", "###", '#', RUST_POWDER);
-        addRecipe(RUST_SWORD, "#", "#", "|", '#', RUST_POWDER, '|', STICK);
-        addRecipe(RUST_SHOVEL, "#", "|", "|", '#', RUST_POWDER, '|', STICK);
-        addRecipe(RUST_PICKAXE, "###", " | ", " | ", '#', RUST_POWDER, '|', STICK);
-        addRecipe(RUST_AXE, "##", "#|", " |", '#', RUST_POWDER, '|', STICK);
-        addRecipe(RUST_HOE, "##", " |", " |", '#', RUST_POWDER, '|', STICK);
-        addRecipe(RUST_HELMET, "###", "# #", '#', RUST_POWDER);
-        addRecipe(RUST_CHESTPLATE, "# #", "###", "###", '#', RUST_POWDER);
-        addRecipe(RUST_LEGGINGS, "###", "# #", "# #", '#', RUST_POWDER);
-        addRecipe(RUST_BOOTS, "# #", "# #", '#', RUST_POWDER);
-        addRecipe(RUST_APPLE, "###", "#X#", "###", '#', RUST_POWDER, 'X', APPLE);
-        addSmelting(RUST_POWDER, IRON_INGOT, 0.15f);
-        addSmelting(RUST_BLOCK, IRON_BLOCK, 1.5f);
-    }
-    
-    public void updateConfig() {
-        randomTicksNeeded = configInt("randomTicksNeeded", 200, 1, Integer.MAX_VALUE,
-                "How many random ticks are needed for iron to rust?");
-        waterEffect =
-                configInt("waterEffect", 25, 0, Integer.MAX_VALUE, "Water effect multiplier.");
-        airEffect = configInt("airEffect", 5, 0, Integer.MAX_VALUE,
-                "Air effect multiplier without enough water.");
-        airEffectWithWater = configInt("airEffectWithWater", 35, 0, Integer.MAX_VALUE,
-                "Air effect multiplier with enough water.");
-        minWaterToMakeAirEffective =
-                configInt("minWaterToMakeAirEffective", 2, 0, 5, "How much water is enough?");
-        config.save();
     }
 }

@@ -35,7 +35,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTableList;
 
 /**
  * @author sjx233
@@ -89,7 +88,7 @@ public class EntityRustyCow extends EntityMob implements IRangedAttackMob {
     @Override
     @Nullable
     protected ResourceLocation getLootTable() {
-        return LootTableList.CHESTS_END_CITY_TREASURE;
+        return IronRustMod.LOOT_TABLE_ENTITIES_RUSTY_COW;
     }
     
     @Override

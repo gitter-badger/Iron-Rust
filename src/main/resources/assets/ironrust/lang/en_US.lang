@@ -1,4 +1,5 @@
 tile.ironrust.blockIronRust.name=Iron Rust Block
+tile.ironrust.blockGrassRust.name=Rust Grass
 
 item.ironrust.powderRust.name=Iron Rust Powder
 item.ironrust.swordRust.name=Iron Rust Sword

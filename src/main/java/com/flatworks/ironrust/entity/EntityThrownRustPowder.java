@@ -1,6 +1,7 @@
 package com.flatworks.ironrust.entity;
 
 import com.flatworks.ironrust.IronRustMod;
+import com.flatworks.ironrust.block.BlockRustPortal;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
@@ -33,10 +34,13 @@ public class EntityThrownRustPowder extends EntityThrowable {
                     .attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 8f);
         }
         
+        if (result.getBlockPos() != null) {
+            BlockRustPortal.trySpawnPortal(this.getEntityWorld(), result.getBlockPos());
+        }
+        
         for (int j = 0; j < 8; ++j) {
             this.getEntityWorld().spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY,
-                    this.posZ, 0.0D, 0.0D, 0.0D,
-                    new int[] { Item.getIdFromItem(IronRustMod.RUST_POWDER) });
+                    this.posZ, 0.0D, 0.0D, 0.0D, Item.getIdFromItem(IronRustMod.RUST_POWDER));
         }
         
         if (!this.getEntityWorld().isRemote) {

@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.flatworks.ironrust.IronRustMod;
 import com.flatworks.ironrust.entity.EntityRustyCow;
+import com.flatworks.ironrust.world.gen.WorldGenAbandonedHut;
 import com.flatworks.ironrust.world.gen.WorldGenAbandonedWells;
 
 import net.minecraft.util.math.BlockPos;
@@ -19,11 +20,12 @@ public class BiomeRust extends Biome {
     private static final WorldGenBlockBlob RUST_GENERATOR =
             new WorldGenBlockBlob(IronRustMod.RUST_BLOCK, 0);
     private static final WorldGenAbandonedWells WELLS_GENERATOR = new WorldGenAbandonedWells();
+    private static final WorldGenAbandonedHut HUT_GENERATOR = new WorldGenAbandonedHut();
     private static final WorldGenFossils FOSSILS_GENERATOR = new WorldGenFossils();
     
     public BiomeRust() {
-        super(new BiomeProperties("Rust").setBaseHeight(0.125F).setHeightVariation(0.05F)
-                .setTemperature(0.8F).setRainDisabled().setWaterColor(0x6d5aff));
+        super(new BiomeProperties("Rust").setBaseHeight(0.125f).setHeightVariation(0.05f)
+                .setTemperature(0.8f).setRainfall(0.4f).setWaterColor(0x6d5aff));
         this.topBlock = IronRustMod.RUST_GRASS.getDefaultState();
         this.spawnableMonsterList.clear();
         this.spawnableCreatureList.clear();
@@ -51,6 +53,13 @@ public class BiomeRust extends Biome {
             int y = rand.nextInt(16) + 8;
             BlockPos blockpos = worldIn.getHeight(pos.add(x, 0, y)).up();
             WELLS_GENERATOR.generate(worldIn, rand, blockpos);
+        }
+        
+        if (rand.nextInt(2000) == 0) {
+            int x = rand.nextInt(16) + 8;
+            int y = rand.nextInt(16) + 8;
+            BlockPos blockpos = worldIn.getHeight(pos.add(x, 0, y)).up();
+            HUT_GENERATOR.generate(worldIn, rand, blockpos);
         }
         
         if (rand.nextInt(64) == 0) {

@@ -1,5 +1,7 @@
 package com.flatworks.ironrust.client.particle;
 
+import net.minecraft.client.particle.IParticleFactory;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticlePortal;
 import net.minecraft.world.World;
 
@@ -14,5 +16,14 @@ public class ParticleRustPortal extends ParticlePortal {
         this.particleRed = f * 0.4f;
         this.particleGreen = f * 0.3f;
         this.particleBlue = f * 0.2f;
+    }
+    
+    public static class Factory implements IParticleFactory {
+        @Override
+        public Particle getEntityFX(int particleID, World worldIn, double xCoordIn, double yCoordIn,
+                double zCoordIn, double xSpeedIn, double ySpeedIn, double zSpeedIn, int... params) {
+            return new ParticleRustPortal(worldIn, xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn,
+                    zSpeedIn);
+        }
     }
 }

@@ -17,8 +17,8 @@ import net.minecraft.world.IBlockAccess;
 /**
  * @author sjx233
  */
-public class BlockRustBlock extends Block {
-    public BlockRustBlock() {
+public class BlockRust extends Block {
+    public BlockRust() {
         super(Material.IRON, MapColor.BROWN);
         this.setHardness(1.0F);
         this.setResistance(7.0F);

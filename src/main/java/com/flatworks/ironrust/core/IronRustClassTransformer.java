@@ -37,10 +37,10 @@ public class IronRustClassTransformer implements IClassTransformer, org.objectwe
                             AbstractInsnNode n = insnNode.getNext();
                             AbstractInsnNode is = n.getNext().getNext().getNext().getNext();
                             insns.set(n, new TypeInsnNode(NEW,
-                                    "com/flatworks/ironrust/block/BlockIronBlock"));
+                                    "com/flatworks/ironrust/block/BlockIron"));
                             insns.set(is,
                                     new MethodInsnNode(INVOKESPECIAL,
-                                            "com/flatworks/ironrust/block/BlockIronBlock", "<init>",
+                                            "com/flatworks/ironrust/block/BlockIron", "<init>",
                                             "(Lnet/minecraft/block/material/Material;Lnet/minecraft/block/material/MapColor;)V",
                                             false));
                         }

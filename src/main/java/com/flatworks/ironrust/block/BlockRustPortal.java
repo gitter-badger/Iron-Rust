@@ -43,12 +43,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockRustPortal extends BlockBreakable {
     public static final PropertyEnum<Axis> AXIS =
             PropertyEnum.create("axis", Axis.class, Axis.X, Axis.Z);
-    protected static final AxisAlignedBB X_AABB =
-            new AxisAlignedBB(0.0D, 0.0D, 0.375D, 1.0D, 1.0D, 0.625D);
-    protected static final AxisAlignedBB Z_AABB =
-            new AxisAlignedBB(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB Y_AABB =
-            new AxisAlignedBB(0.375D, 0.0D, 0.375D, 0.625D, 1.0D, 0.625D);
+    protected static final AxisAlignedBB X_AABB = new AxisAlignedBB(0d, 0d, 0.375d, 1d, 1d, 0.625d);
+    protected static final AxisAlignedBB Z_AABB = new AxisAlignedBB(0.375d, 0d, 0d, 0.625d, 1d, 1d);
     
     public BlockRustPortal() {
         super(Material.PORTAL, false);
@@ -69,7 +65,7 @@ public class BlockRustPortal extends BlockBreakable {
             case Z:
                 return Z_AABB;
             default:
-                return Y_AABB;
+                return FULL_BLOCK_AABB;
         }
     }
     
@@ -276,29 +272,27 @@ public class BlockRustPortal extends BlockBreakable {
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
         if (rand.nextInt(100) == 0) {
-            worldIn.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D,
-                    SoundEvents.BLOCK_PORTAL_AMBIENT, SoundCategory.BLOCKS, 0.5F,
-                    rand.nextFloat() * 0.4F + 0.8F, false);
+            worldIn.playSound(pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d,
+                    SoundEvents.BLOCK_PORTAL_AMBIENT, SoundCategory.BLOCKS, 0.5f,
+                    rand.nextFloat() * 0.4f + 0.8f, false);
         }
         
         for (int i = 0; i < 4; ++i) {
             double x = pos.getX() + rand.nextFloat();
             double y = pos.getY() + rand.nextFloat();
             double z = pos.getZ() + rand.nextFloat();
-            double vx = (rand.nextFloat() - 0.5D) * 0.5D;
-            double vy = (rand.nextFloat() - 0.5D) * 0.5D;
-            double vz = (rand.nextFloat() - 0.5D) * 0.5D;
+            double vx = (rand.nextFloat() - 0.5d) * 0.5d;
+            double vy = (rand.nextFloat() - 0.5d) * 0.5d;
+            double vz = (rand.nextFloat() - 0.5d) * 0.5d;
             int j = rand.nextInt(2) * 2 - 1;
-            
             if (worldIn.getBlockState(pos.west()).getBlock() != this
                     && worldIn.getBlockState(pos.east()).getBlock() != this) {
-                x = pos.getX() + 0.5D + 0.25D * j;
-                vx = rand.nextFloat() * 2.0F * j;
+                x = pos.getX() + 0.5d + 0.25d * j;
+                vx = rand.nextFloat() * 2f * j;
             } else {
-                z = pos.getZ() + 0.5D + 0.25D * j;
-                vz = rand.nextFloat() * 2.0F * j;
+                z = pos.getZ() + 0.5d + 0.25d * j;
+                vz = rand.nextFloat() * 2f * j;
             }
-            
             Minecraft.getMinecraft().effectRenderer
                     .addEffect(new ParticleRustPortal(worldIn, x, y, z, vx, vy, vz));
         }
@@ -328,59 +322,53 @@ public class BlockRustPortal extends BlockBreakable {
         return new BlockStateContainer(this, AXIS);
     }
     
-    public PatternHelper createPatternHelper(World worldIn, BlockPos p_181089_2_) {
+    public PatternHelper createPatternHelper(World worldIn, BlockPos pos) {
         Axis axis = Axis.Z;
-        Size size = new Size(worldIn, p_181089_2_, Axis.X);
-        LoadingCache<BlockPos, BlockWorldState> loadingcache =
-                BlockPattern.createLoadingCache(worldIn, true);
-        
+        Size size = new Size(worldIn, pos, Axis.X);
         if (!size.isValid()) {
             axis = Axis.X;
-            size = new Size(worldIn, p_181089_2_, Axis.Z);
+            size = new Size(worldIn, pos, Axis.Z);
         }
-        
+        LoadingCache<BlockPos, BlockWorldState> cache =
+                BlockPattern.createLoadingCache(worldIn, true);
         if (!size.isValid()) {
-            return new PatternHelper(p_181089_2_, EnumFacing.NORTH, EnumFacing.UP, loadingcache, 1,
-                    1, 1);
+            return new PatternHelper(pos, EnumFacing.NORTH, EnumFacing.UP, cache, 1, 1, 1);
         }
         int[] aint = new int[AxisDirection.values().length];
-        EnumFacing enumfacing = size.rightDir.rotateYCCW();
-        BlockPos blockpos = size.bottomLeft.up(size.getHeight() - 1);
+        EnumFacing facing = size.rightDir.rotateYCCW();
+        BlockPos topLeft = size.bottomLeft.up(size.getHeight() - 1);
         
-        for (AxisDirection enumfacing$axisdirection : AxisDirection.values()) {
-            PatternHelper blockpattern$patternhelper = new PatternHelper(
-                    enumfacing.getAxisDirection() == enumfacing$axisdirection ? blockpos
-                            : blockpos.offset(size.rightDir, size.getWidth() - 1),
-                    EnumFacing.getFacingFromAxis(enumfacing$axisdirection, axis), EnumFacing.UP,
-                    loadingcache, size.getWidth(), size.getHeight(), 1);
+        for (AxisDirection direction : AxisDirection.values()) {
+            PatternHelper helper = new PatternHelper(
+                    facing.getAxisDirection() == direction ? topLeft
+                            : topLeft.offset(size.rightDir, size.getWidth() - 1),
+                    EnumFacing.getFacingFromAxis(direction, axis), EnumFacing.UP, cache,
+                    size.getWidth(), size.getHeight(), 1);
             
             for (int i = 0; i < size.getWidth(); ++i) {
                 for (int j = 0; j < size.getHeight(); ++j) {
-                    BlockWorldState blockworldstate =
-                            blockpattern$patternhelper.translateOffset(i, j, 1);
-                    
-                    if (blockworldstate.getBlockState() != null
-                            && blockworldstate.getBlockState().getMaterial() != Material.AIR) {
-                        ++aint[enumfacing$axisdirection.ordinal()];
+                    BlockWorldState state = helper.translateOffset(i, j, 1);
+                    if (state.getBlockState() != null
+                            && state.getBlockState().getMaterial() != Material.AIR) {
+                        aint[direction.ordinal()]++;
                     }
                 }
             }
         }
         
-        AxisDirection enumfacing$axisdirection1 = AxisDirection.POSITIVE;
+        AxisDirection direction1 = AxisDirection.POSITIVE;
         
-        for (AxisDirection enumfacing$axisdirection2 : AxisDirection.values()) {
-            if (aint[enumfacing$axisdirection2.ordinal()] < aint[enumfacing$axisdirection1
-                    .ordinal()]) {
-                enumfacing$axisdirection1 = enumfacing$axisdirection2;
+        for (AxisDirection direction2 : AxisDirection.values()) {
+            if (aint[direction2.ordinal()] < aint[direction1.ordinal()]) {
+                direction1 = direction2;
             }
         }
         
         return new PatternHelper(
-                enumfacing.getAxisDirection() == enumfacing$axisdirection1 ? blockpos
-                        : blockpos.offset(size.rightDir, size.getWidth() - 1),
-                EnumFacing.getFacingFromAxis(enumfacing$axisdirection1, axis), EnumFacing.UP,
-                loadingcache, size.getWidth(), size.getHeight(), 1);
+                facing.getAxisDirection() == direction1 ? topLeft
+                        : topLeft.offset(size.rightDir, size.getWidth() - 1),
+                EnumFacing.getFacingFromAxis(direction1, axis), EnumFacing.UP, cache,
+                size.getWidth(), size.getHeight(), 1);
     }
     
     public static class Size {

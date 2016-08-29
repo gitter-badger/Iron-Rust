@@ -16,8 +16,8 @@ import net.minecraft.world.World;
 /**
  * @author sjx233
  */
-public class BlockIronBlock extends Block {
-    public BlockIronBlock(Material blockMaterialIn, MapColor blockMapColorIn) {
+public class BlockIron extends Block {
+    public BlockIron(Material blockMaterialIn, MapColor blockMapColorIn) {
         super(blockMaterialIn, blockMapColorIn);
         this.setTickRandomly(true);
     }

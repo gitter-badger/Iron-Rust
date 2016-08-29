@@ -5,9 +5,8 @@ import static com.flatworks.ironrust.IronRustMod.NAME;
 import static com.flatworks.ironrust.IronRustMod.VERSION;
 
 import java.util.HashMap;
-import java.util.List;
 
-import com.flatworks.ironrust.block.BlockRustBlock;
+import com.flatworks.ironrust.block.BlockRust;
 import com.flatworks.ironrust.block.BlockRustGrass;
 import com.flatworks.ironrust.block.BlockRustPortal;
 import com.flatworks.ironrust.item.*;
@@ -90,7 +89,7 @@ public class IronRustMod {
     public static final Item RUST_LEGGINGS = new ItemRustLeggings();
     public static final Item RUST_BOOTS = new ItemRustBoots();
     public static final Item RUST_APPLE = new ItemRustApple();
-    public static final Block RUST_BLOCK = new BlockRustBlock();
+    public static final Block RUST_BLOCK = new BlockRust();
     public static final Block RUST_GRASS = new BlockRustGrass();
     public static final Block RUST_PORTAL = new BlockRustPortal();
     
@@ -139,10 +138,9 @@ public class IronRustMod {
     public void onWorldTick(WorldTickEvent event) {
         if (event.phase == TickEvent.Phase.START && event.side.isServer()) {
             WorldServer world = (WorldServer) event.world;
-            List<Entity> entities = world.getLoadedEntityList();
-            int size = entities.size();
+            int size = world.loadedEntityList.size();
             for (int i = 0; i < size - 1; i++) {
-                Entity entity = entities.get(i);
+                Entity entity = world.loadedEntityList.get(i);
                 boolean inPortal = IronRustMod.get(TeleporterRust.inPortal, entity, false);
                 int timeUntilPortal = IronRustMod.get(TeleporterRust.timeUntilPortal, entity, 0);
                 int portalCounter = IronRustMod.get(TeleporterRust.portalCounter, entity, 0);
@@ -155,7 +153,6 @@ public class IronRustMod {
                                 if (portalCounter++ >= time) {
                                     portalCounter = time;
                                     timeUntilPortal = entity.getPortalCooldown();
-                                    
                                     PlayerList list = world.getMinecraftServer().getPlayerList();
                                     MinecraftServer server = world.getMinecraftServer();
                                     int dimensionId =

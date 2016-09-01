@@ -52,6 +52,7 @@ public class CommonProxy {
         init();
         
         MinecraftForge.EVENT_BUS.register(instance);
+        logger = event.getModLog();
         config = new Configuration(event.getSuggestedConfigurationFile());
         this.updateConfig();
         TOOL_MATERIAL_RUST.setRepairItem(new ItemStack(RUST_POWDER, 1,

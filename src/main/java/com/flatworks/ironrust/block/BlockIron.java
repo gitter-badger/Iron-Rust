@@ -24,7 +24,6 @@ public class BlockIron extends Block {
     
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
-        super.updateTick(worldIn, pos, state, random);
         int water = 0;
         int air = 0;
         for (EnumFacing side : EnumFacing.VALUES) {
@@ -33,7 +32,7 @@ public class BlockIron extends Block {
             Material material = offsetState.getMaterial();
             if (material == Material.WATER) {
                 water++;
-            } else if (material == Material.SPONGE) {
+            } else if (offsetState.getProperties().containsKey(BlockSponge.WET)) {
                 Boolean wet = offsetState.getValue(BlockSponge.WET);
                 if (wet != null && wet) {
                     water++;

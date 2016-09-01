@@ -6,6 +6,8 @@ import static com.flatworks.ironrust.IronRustMod.VERSION;
 
 import java.util.HashMap;
 
+import org.apache.logging.log4j.Logger;
+
 import com.flatworks.ironrust.block.BlockRust;
 import com.flatworks.ironrust.block.BlockRustGrass;
 import com.flatworks.ironrust.block.BlockRustPortal;
@@ -63,6 +65,7 @@ public class IronRustMod {
     @SidedProxy(clientSide = "com.flatworks.ironrust.client.ClientProxy",
             serverSide = "com.flatworks.ironrust.CommonProxy", modId = MODID)
     public static CommonProxy proxy;
+    public static Logger logger;
     public static Configuration config;
     
     public static int randomTicksNeeded = 200;

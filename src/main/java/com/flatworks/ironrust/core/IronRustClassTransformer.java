@@ -13,27 +13,31 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 
+import com.flatworks.ironrust.IronRustMod;
+
 import net.minecraft.launchwrapper.IClassTransformer;
 
 /**
  * @author sjx233
  */
 public class IronRustClassTransformer implements IClassTransformer, org.objectweb.asm.Opcodes {
-    private static final String Block = "net.minecraft.block.Block";
-    private static final List<String> Block$func_149671_p =
-            Arrays.asList("func_149671_p", "registerBlocks");
+    private static final List<String> Block = Arrays.asList("akf", "net.minecraft.block.Block");
+    private static final List<String> func_149671_p =
+            Arrays.asList("x", "func_149671_p", "registerBlocks");
     
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
-        if (checkClass(transformedName, Block)) {
+        if (checkClass(name, Block)) {
             ClassReader classReader = new ClassReader(basicClass);
             ClassNode classNode = new ClassNode();
             classReader.accept(classNode, 0);
+            boolean found = false;
             for (MethodNode methodNode : classNode.methods) {
-                if (checkMethod(methodNode, Block$func_149671_p, "()V")) {
+                if (checkMethod(methodNode, func_149671_p, "()V")) {
                     InsnList insns = methodNode.instructions;
                     for (AbstractInsnNode insnNode : insns.toArray()) {
                         if (checkLdcString(insnNode, "iron_block")) {
+                            found = true;
                             AbstractInsnNode n = insnNode.getNext();
                             AbstractInsnNode is = n.getNext().getNext().getNext().getNext();
                             insns.set(n, new TypeInsnNode(NEW,
@@ -47,6 +51,9 @@ public class IronRustClassTransformer implements IClassTransformer, org.objectwe
                     }
                 }
             }
+            if (!found) {
+                IronRustMod.logger.error("There was errors running the class transformer.");
+            }
             ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
             classNode.accept(classWriter);
             return classWriter.toByteArray();
@@ -54,8 +61,8 @@ public class IronRustClassTransformer implements IClassTransformer, org.objectwe
         return basicClass;
     }
     
-    private static boolean checkClass(String className, String name) {
-        return name.equals(className);
+    private static boolean checkClass(String name, List<String> names) {
+        return names.contains(name);
     }
     
     private static boolean checkMethod(MethodNode node, List<String> names, String desc) {

@@ -1,2 +1,2 @@
-# Iron-Rust
+# Iron Rust
 Iron + Oxygen!
